@@ -107,17 +107,15 @@ public class DetailActivity extends AppCompatActivity {
                         }while(cursor.moveToNext());
                     }
                     if(existed){
-                        Uri updateUri = Uri.parse("content://com.example.flowershop/cart/" + id);
                         ContentValues values = new ContentValues();
                         values.put("quantity", oldQuantity + newQuantity);
                         int rowUpdate = contentResolver.update(uri, values, "Id=?", new String[]{String.valueOf(id)});
-                        if(rowUpdate>0){
-                            Toast.makeText(getApplicationContext(), "Add successful!", Toast.LENGTH_SHORT).show();
-                        }else{
+                        if (rowUpdate > 0) {
+                            Toast.makeText(getApplicationContext(), "Add successfully!", Toast.LENGTH_SHORT).show();
+                        } else {
                             Toast.makeText(getApplicationContext(), "Add failed!", Toast.LENGTH_SHORT).show();
                         }
                     }else {
-                        Uri insertUri = Uri.parse("content://com.example.flowershop/cart");
                         ContentValues values = new ContentValues();
                         values.put("id", id);
                         values.put("name", name);
@@ -126,7 +124,7 @@ public class DetailActivity extends AppCompatActivity {
                         values.put("quantity", Integer.parseInt(quantityTxt.getText().toString()));
                         Uri newRowUri = contentResolver.insert(uri, values);
                         if (newRowUri != null) {
-                            Toast.makeText(getApplicationContext(), "Add successful!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Add successfully!", Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(getApplicationContext(), "Add failed!", Toast.LENGTH_SHORT).show();
                         }

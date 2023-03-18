@@ -47,6 +47,7 @@ public class CartActivity extends AppCompatActivity {
                 list.add(new Flower(id, name, price, image, quantity, ""));
             }while(cursor.moveToNext());
         }
+        cursor.close();
         totalPrice.setText("Total $" + total);
         RecyclerView recyclerView = findViewById(R.id.recyclerView3);
         CartAdapter adapter = new CartAdapter(this, list, total);
@@ -75,6 +76,11 @@ public class CartActivity extends AppCompatActivity {
                 String id = String.valueOf(list.get(position).getId());
                 int row = contentResolver.delete(uri, "Id=?", new String[]{id});
                 if(row > 0){
+                    String totalS = totalPrice.getText().toString();
+                    String newTotalS = totalS.substring(7, totalS.length());
+                    double newTotal = Double.parseDouble(newTotalS);
+                    totalPrice.setText("Total $" + (newTotal -= list.get(position).getQuantity()
+                            * list.get(position).getPrice()));
                     Toast.makeText(CartActivity.this, list.get(position).getName() + " removed!", Toast.LENGTH_SHORT).show();
                     list.remove(position);
                     adapter.notifyDataSetChanged();

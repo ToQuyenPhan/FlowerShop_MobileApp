@@ -80,6 +80,7 @@ public class HomeActivity extends AppCompatActivity {
                 list.add(new Flower(id, name, price, image, quantity, ""));
             }while(cursor.moveToNext());
         }
+        cursor.close();
         if(list.size() > 0){
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
                 NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
