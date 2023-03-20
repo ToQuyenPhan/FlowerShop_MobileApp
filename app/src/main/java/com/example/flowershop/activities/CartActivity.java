@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.ContentResolver;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -79,8 +80,10 @@ public class CartActivity extends AppCompatActivity {
                     String totalS = totalPrice.getText().toString();
                     String newTotalS = totalS.substring(7, totalS.length());
                     double newTotal = Double.parseDouble(newTotalS);
-                    totalPrice.setText("Total $" + (newTotal -= list.get(position).getQuantity()
-                            * list.get(position).getPrice()));
+                    SharedPreferences pref = getApplication().getSharedPreferences("CurrentQuantity", MODE_PRIVATE);
+                    int currentQuantity = pref.getInt(list.get(position).getId() + "", 0);
+                    totalPrice.setText("Total $" + ((double) Math.round((newTotal - currentQuantity
+                            * list.get(position).getPrice()) * 100) / 100));
                     Toast.makeText(CartActivity.this, list.get(position).getName() + " removed!", Toast.LENGTH_SHORT).show();
                     list.remove(position);
                     adapter.notifyDataSetChanged();

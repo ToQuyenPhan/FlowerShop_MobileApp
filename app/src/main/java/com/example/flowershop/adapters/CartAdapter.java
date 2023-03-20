@@ -107,24 +107,29 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             e.printStackTrace();
         }
         holder.quantity.setText(String.valueOf(current.getQuantity()));
+        SharedPreferences pref = holder.quantity.getContext().getSharedPreferences("CurrentQuantity", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
         holder.minusBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(Integer.parseInt(holder.quantity.getText().toString()) == 1) return;
                 holder.quantity.setText(String.valueOf(Integer.parseInt(holder.quantity.getText().toString()) - 1));
-                current.setQuantity(Integer.parseInt(holder.quantity.getText().toString()) - 1);
+                current.setQuantity(Integer.parseInt(holder.quantity.getText().toString()));
                 total -= current.getPrice();
-                parentLayout.setText("Total $" + total);
-
+                parentLayout.setText("Total $" + ((double) Math.round(total * 100) / 100));
+                editor.putInt(current.getId() + "", current.getQuantity());
+                editor.commit();
             }
         });
         holder.plusBtn.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 holder.quantity.setText(String.valueOf(Integer.parseInt(holder.quantity.getText().toString()) + 1));
-                current.setQuantity(Integer.parseInt(holder.quantity.getText().toString()) + 1);
+                current.setQuantity(Integer.parseInt(holder.quantity.getText().toString()));
                 total += current.getPrice();
-                parentLayout.setText("Total $" + total);
+                parentLayout.setText("Total $" + ((double) Math.round(total * 100) / 100));
+                editor.putInt(current.getId() + "", current.getQuantity());
+                editor.commit();
             }
         }));
         checkoutBtn.setOnClickListener(new View.OnClickListener() {
