@@ -26,7 +26,7 @@ public class BillingActivity extends AppCompatActivity {
             String orderCodeS = getIntent().getStringExtra("orderCode");
             String createdDate = getIntent().getStringExtra("createdDate");
             int statusIntent = getIntent().getIntExtra("status", 0);
-            totalPayment.setText("$" + total);
+            totalPayment.setText("$" + ((double) Math.round(total * 100) / 100));
             orderCode.setText(orderCodeS);
             if(statusIntent == 1){
                 status.setText("CHECKED OUT");
